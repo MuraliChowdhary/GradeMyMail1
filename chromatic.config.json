@@ -1,0 +1,26 @@
+{
+  "projectToken": "PROJECT_TOKEN_PLACEHOLDER",
+  "buildScriptName": "build-storybook",
+  "exitZeroOnChanges": true,
+  "exitOnceUploaded": true,
+  "ignoreLastBuildOnBranch": "main",
+  "skip": "dependabot/**",
+  "externals": [
+    "public/**",
+    "src/assets/**"
+  ],
+  "delay": 3000,
+  "diffThreshold": 0.2,
+  "threshold": 0.2,
+  "pauseAnimationAtEnd": true,
+  "debug": false,
+  "onlyChanged": true,
+  "traceChanged": "expanded",
+  "diagnostics": true,
+  "zip": true,
+  "junitReport": true,
+  "storybookBuildDir": "storybook-static",
+  "allowConsoleErrors": false,
+  "ignoreLastBuildOnBranch": ["main", "develop"],
+  "autoAcceptChanges": "main"
+}

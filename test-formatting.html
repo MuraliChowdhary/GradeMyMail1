@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Formatting Test</title>
+    <style>
+        .test-content {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-size: 18px;
+            line-height: 1.7;
+            white-space: pre-wrap;
+            padding: 20px;
+            border: 1px solid #ccc;
+            margin: 20px;
+            background: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <h1>Formatting Test</h1>
+    
+    <h2>Original HTML with formatting:</h2>
+    <div style="border: 1px solid #ccc; padding: 10px; margin: 10px;">
+        &lt;p&gt;This is paragraph 1.&lt;/p&gt;
+        &lt;p&gt;This is paragraph 2 with some content.&lt;/p&gt;
+        &lt;br&gt;
+        &lt;div&gt;This is a div with content.&lt;/div&gt;
+    </div>
+    
+    <h2>After cleanHtmlTags processing:</h2>
+    <div class="test-content" id="processed-content"></div>
+    
+    <script>
+        // Simulate the cleanHtmlTags function
+        function cleanHtmlTags(html) {
+            return html
+                // Convert block elements to line breaks
+                .replace(/<\/?(p|div|h[1-6]|li|blockquote)[^>]*>/gi, '\n')
+                .replace(/<br\s*\/?>/gi, '\n')
+                .replace(/<\/?(ul|ol)[^>]*>/gi, '\n')
+                // Remove remaining HTML tags
+                .replace(/<[^>]*>/g, '')
+                // Clean up HTML entities
+                .replace(/&nbsp;/g, ' ')
+                .replace(/&amp;/g, '&')
+                .replace(/&lt;/g, '<')
+                .replace(/&gt;/g, '>')
+                .replace(/&quot;/g, '"')
+                .replace(/&#39;/g, "'")
+                // Clean up excessive whitespace while preserving intentional line breaks
+                .replace(/\n\s*\n\s*\n/g, '\n\n') // Max 2 consecutive line breaks
+                .replace(/[ \t]+/g, ' ') // Multiple spaces/tabs to single space
+                .replace(/\n /g, '\n') // Remove spaces at start of lines
+                .replace(/ \n/g, '\n') // Remove spaces at end of lines
+                .trim();
+        }
+        
+        const originalHtml = '<p>This is paragraph 1.</p><p>This is paragraph 2 with some content.</p><br><div>This is a div with content.</div>';
+        const processed = cleanHtmlTags(originalHtml);
+        
+        document.getElementById('processed-content').textContent = processed;
+        
+        console.log('Original:', originalHtml);
+        console.log('Processed:', JSON.stringify(processed));
+    </script>
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test FixMyMail Changes</title>
+    <style>
+        body { font-family: system-ui; margin: 20px; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .diff-viewer { border: 1px solid #ddd; border-radius: 8px; overflow: hidden; }
+        .header { display: flex; background: #f5f5f5; border-bottom: 1px solid #ddd; }
+        .header > div { flex: 1; padding: 12px 16px; font-weight: 600; }
+        .header > div:first-child { border-right: 1px solid #ddd; }
+        .content { display: flex; height: 400px; }
+        .pane { flex: 1; padding: 16px; overflow: auto; }
+        .pane:first-child { background: #f9f9f9; border-right: 1px solid #ddd; }
+        .highlight { background: #dcfce7; padding: 2px 4px; border-radius: 3px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>FixMyMail UI Test</h1>
+        <p>This shows the cleaned up UI with proper space utilization:</p>
+        
+        <div class="diff-viewer">
+            <div class="header">
+                <div>Original</div>
+                <div>Improved <button style="float: right; padding: 4px 8px; background: #2563eb; color: white; border: none; border-radius: 4px;">Copy</button></div>
+            </div>
+            <div class="content">
+                <div class="pane">
+                    <p>OpenAI Unlocks Image API for Business</p>
+                    <p>OpenAI has launched its image generation model, gpt-image-1, to the API, allowing developers to integrate text-to-image creation, editing, and style rendering into their tools. Early adopters include Adobe, Figma, Airtable, and Quora. Pricing starts at $0.02 per image with built-in safety features.</p>
+                </div>
+                <div class="pane">
+                    <p>OpenAI Unlocks Image API for Business</p>
+                    <p>OpenAI has launched its image generation model, gpt-image-1, to the API, allowing developers to integrate text-to-image creation, editing, and style rendering into their tools. Early adopters include <span class="highlight">Adobe, Figma, Airtable, and Quora</span>. Pricing starts at $0.02 per image with <span class="highlight">comprehensive safety features</span>.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div style="margin-top: 20px; padding: 12px; background: #f0f9ff; border: 1px solid #0ea5e9; border-radius: 6px;">
+            <strong>Changes Made:</strong>
+            <ul>
+                <li>✅ Fixed transformation issue - now using rich GMMeditor mappings instead of converting back to old format</li>
+                <li>✅ Removed large empty space below text blocks</li>
+                <li>✅ Cleaned up UI with better space utilization</li>
+                <li>✅ Removed debug info blocks that were taking up space</li>
+                <li>✅ Improved highlighting using word-level diffs from GMMeditor</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

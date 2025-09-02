@@ -1,0 +1,91 @@
+{
+  "analyze": {
+    "success": {
+      "message": {
+        "content": "This is a <fluff>really great</fluff> email that contains <spam_words>amazing deals</spam_words> and some <hard_to_read>complex sentences that are difficult to understand and process</hard_to_read>."
+      }
+    },
+    "multipleIssues": {
+      "message": {
+        "content": "Hey there! <fluff>I hope this email finds you well.</fluff> We have <spam_words>AMAZING DEALS</spam_words> that you <spam_words>CANNOT MISS</spam_words>! <hard_to_read>This is a really long sentence that goes on and on without much structure and contains multiple clauses that make it difficult to read and understand what the main point is supposed to be.</hard_to_read> <fluff>Please don't hesitate to reach out</fluff> if you have any questions."
+      }
+    },
+    "fluffOnly": {
+      "message": {
+        "content": "I hope this email finds you well. <fluff>I wanted to reach out</fluff> regarding the project. <fluff>Please let me know your thoughts at your earliest convenience.</fluff> Thank you for your time."
+      }
+    },
+    "spamWordsOnly": {
+      "message": {
+        "content": "Check out our <spam_words>AMAZING DEALS</spam_words> and <spam_words>LIMITED TIME OFFERS</spam_words>! Don't miss these <spam_words>INCREDIBLE SAVINGS</spam_words>!"
+      }
+    },
+    "hardToReadOnly": {
+      "message": {
+        "content": "The project status update includes <hard_to_read>multiple interconnected components that require careful consideration of various factors including timeline dependencies, resource allocation, stakeholder requirements, and technical implementation details that must be thoroughly evaluated before proceeding with the next phase of development</hard_to_read>."
+      }
+    },
+    "noIssues": {
+      "message": {
+        "content": "This is a well-written professional email with clear communication."
+      }
+    },
+    "emptyContent": {
+      "message": {
+        "content": ""
+      }
+    },
+    "error": {
+      "error": "Analysis service temporarily unavailable"
+    },
+    "networkError": {
+      "error": "Network connection failed"
+    },
+    "timeoutError": {
+      "error": "Request timeout - please try again"
+    }
+  },
+  "fix": {
+    "success": {
+      "message": {
+        "content": "<old_draft>really great</old_draft><optimized_draft>excellent</optimized_draft>\n<old_draft>amazing deals</old_draft><optimized_draft>valuable offers</optimized_draft>\n<old_draft>complex sentences that are difficult to understand and process</old_draft><optimized_draft>clear and concise information</optimized_draft>"
+      }
+    },
+    "multipleImprovements": {
+      "message": {
+        "content": "<old_draft>I hope this email finds you well.</old_draft><optimized_draft>I hope you're doing well.</optimized_draft>\n<old_draft>AMAZING DEALS</old_draft><optimized_draft>great offers</optimized_draft>\n<old_draft>CANNOT MISS</old_draft><optimized_draft>worth considering</optimized_draft>\n<old_draft>This is a really long sentence that goes on and on without much structure and contains multiple clauses that make it difficult to read and understand what the main point is supposed to be.</old_draft><optimized_draft>Here are the key project updates you need to know.</optimized_draft>\n<old_draft>Please don't hesitate to reach out</old_draft><optimized_draft>Feel free to contact me</optimized_draft>"
+      }
+    },
+    "singleImprovement": {
+      "message": {
+        "content": "<old_draft>I wanted to reach out</old_draft><optimized_draft>I'm writing to discuss</optimized_draft>"
+      }
+    },
+    "noImprovements": {
+      "message": {
+        "content": ""
+      }
+    },
+    "error": {
+      "error": "Improvement service temporarily unavailable"
+    },
+    "networkError": {
+      "error": "Network connection failed"
+    },
+    "timeoutError": {
+      "error": "Request timeout - please try again"
+    }
+  },
+  "store": {
+    "success": {
+      "id": "test-uuid-12345"
+    }
+  },
+  "load": {
+    "success": {
+      "fullOriginalText": "This is a really great email that contains amazing deals and some complex sentences that are difficult to understand and process.",
+      "fullOriginalHTML": "<p>This is a <strong>really great</strong> email that contains <em>amazing deals</em> and some complex sentences that are difficult to understand and process.</p>",
+      "taggedContent": "This is a <fluff>really great</fluff> email that contains <spam_words>amazing deals</spam_words> and some <hard_to_read>complex sentences that are difficult to understand and process</hard_to_read>."
+    }
+  }
+}

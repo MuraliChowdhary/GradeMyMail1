@@ -1,0 +1,332 @@
+/* Premium FixMyMail Page Styles - Apple-inspired Light Mode */
+
+.premium-header-container {
+  /* Light mode: Clean white background with subtle gradient */
+  background: linear-gradient(135deg, #ffffff 0%, #f9f9f9 100%);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-bottom: 1px solid #e5e5ea;
+  position: relative;
+  z-index: 10;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.05);
+}
+
+.dark .premium-header-container {
+  /* Dark mode: Keep existing dark styling */
+  background: rgba(28, 28, 30, 0.95) !important;
+  border-bottom-color: rgba(255, 255, 255, 0.08) !important;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.02) !important;
+}
+
+.premium-back-button {
+  display: flex;
+  align-items: center;
+  padding: 14px 24px;
+  /* Light mode: Clean white button with subtle border */
+  background: #ffffff;
+  border: 1px solid #d1d1d6;
+  border-radius: 14px;
+  color: #1d1d1f;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 
+    0 1px 3px rgba(0, 0, 0, 0.1),
+    0 1px 2px rgba(0, 0, 0, 0.06);
+}
+
+.premium-back-button:hover {
+  /* Light mode: Subtle hover effect matching GradeMyMail */
+  background: #f9f9f9;
+  border-color: #86868b;
+  transform: translateY(-1px);
+  box-shadow: 
+    0 4px 12px rgba(0, 0, 0, 0.1),
+    0 2px 4px rgba(0, 0, 0, 0.06);
+}
+
+.premium-back-button:active {
+  transform: translateY(0);
+  transition-duration: 0.1s;
+}
+
+.premium-back-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.dark .premium-back-button {
+  /* Dark mode: Keep existing dark styling */
+  background: rgba(44, 44, 46, 0.8) !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+  color: #FFFFFF !important;
+  box-shadow: 
+    0 2px 8px rgba(0, 0, 0, 0.2) !important,
+    0 4px 16px rgba(0, 0, 0, 0.1) !important;
+}
+
+.dark .premium-back-button:hover {
+  background: rgba(44, 44, 46, 0.95) !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+  box-shadow: 
+    0 4px 16px rgba(0, 0, 0, 0.3) !important,
+    0 8px 32px rgba(0, 0, 0, 0.2) !important;
+}
+
+.premium-title-section {
+  display: flex;
+  flex-direction: column;
+  margin-left: 8px;
+}
+
+.premium-page-title {
+  font-size: 32px;
+  font-weight: 800;
+  /* Light mode: Clean black text matching GradeMyMail */
+  color: #1d1d1f;
+  margin: 0;
+  letter-spacing: -0.03em;
+  line-height: 1.0;
+}
+
+.dark .premium-page-title {
+  /* Dark mode: Keep existing white text */
+  color: #ffffff;
+  background: none;
+  -webkit-text-fill-color: #ffffff;
+}
+
+.premium-page-subtitle {
+  font-size: 16px;
+  /* Light mode: Darker color for better readability */
+  color: #6d6d70;
+  margin: 4px 0 0 0;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+.dark .premium-page-subtitle {
+  /* Dark mode: Keep existing muted color */
+  color: #6E6E73;
+}
+
+.premium-loading-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  /* Light mode: Subtle gray background */
+  background: #e5e5ea;
+  overflow: hidden;
+}
+
+.dark .premium-loading-bar {
+  /* Dark mode: Keep existing subtle background */
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.loading-progress {
+  height: 100%;
+  /* Light mode: Clean black progress bar */
+  background: linear-gradient(90deg, #1d1d1f, #86868b, #1d1d1f);
+  background-size: 200% 100%;
+  animation: loadingShimmer 2s ease-in-out infinite;
+  border-radius: 2px;
+}
+
+.dark .loading-progress {
+  /* Dark mode: Keep existing gradient */
+  background: linear-gradient(90deg, #1D1D1F, #2D2D2F, #1D1D1F);
+}
+
+@keyframes loadingShimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.premium-main-content {
+  position: relative;
+  z-index: 1;
+  /* Light mode: Clean white background matching GradeMyMail */
+  background: #ffffff;
+  min-height: calc(100vh - 200px);
+}
+
+.dark .premium-main-content {
+  /* Dark mode: Keep existing dark background */
+  background: #1C1C1E !important;
+  min-height: calc(100vh - 200px);
+}
+
+.premium-diff-container {
+  animation: contentFadeIn 0.8s ease-out;
+  margin: 0 auto;
+  position: relative;
+  /* Light mode: Clean background and text colors */
+  background: #ffffff;
+  color: #1d1d1f;
+}
+
+.dark .premium-diff-container {
+  /* Dark mode: Keep existing dark styling */
+  background: #2C2C2E;
+  color: #ffffff;
+}
+
+@keyframes contentFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Ensure diff viewer content uses proper light mode colors */
+.premium-diff-container .diff-line {
+  /* Light mode: Clean text colors */
+  color: #1d1d1f;
+  background: #ffffff;
+}
+
+.dark .premium-diff-container .diff-line {
+  /* Dark mode: Keep existing colors */
+  color: #ffffff;
+  background: #2C2C2E;
+}
+
+.premium-diff-container .diff-line-added {
+  /* Light mode: Subtle green for additions */
+  background-color: rgba(52, 199, 89, 0.1);
+  border-left: 3px solid #34c759;
+}
+
+.dark .premium-diff-container .diff-line-added {
+  /* Dark mode: Keep existing green */
+  background-color: rgba(52, 199, 89, 0.2);
+  border-left: 3px solid #30d158;
+}
+
+.premium-diff-container .diff-line-removed {
+  /* Light mode: Subtle red for removals */
+  background-color: rgba(255, 69, 58, 0.1);
+  border-left: 3px solid #ff453a;
+}
+
+.dark .premium-diff-container .diff-line-removed {
+  /* Dark mode: Keep existing red */
+  background-color: rgba(255, 69, 58, 0.2);
+  border-left: 3px solid #ff453a;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .premium-header-container .max-w-7xl {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+  
+  .premium-main-content .max-w-6xl {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+  
+  .premium-page-title {
+    font-size: 24px;
+  }
+  
+  .premium-page-subtitle {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 768px) {
+  .premium-header-container .max-w-7xl {
+    padding: 20px 16px;
+  }
+  
+  .premium-main-content .max-w-6xl {
+    padding: 16px;
+  }
+  
+  .premium-header-container .flex:first-child {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  
+  .premium-header-container .flex.items-center:last-child {
+    position: absolute;
+    top: 20px;
+    right: 16px;
+    margin-top: 0;
+  }
+  
+  .premium-title-section {
+    margin-left: 0;
+    margin-top: 8px;
+  }
+  
+  .premium-page-title {
+    font-size: 22px;
+  }
+  
+  .premium-back-button {
+    padding: 10px 16px;
+    font-size: 14px;
+  }
+}
+
+/* Theme Toggle Positioning */
+.premium-header-container .flex.items-center:last-child {
+  position: relative;
+  z-index: 20;
+}
+
+/* Ensure theme toggle has proper spacing on mobile */
+@media (max-width: 768px) {
+  .premium-header-container .flex.items-center:last-child {
+    margin-top: 16px;
+    align-self: flex-end;
+  }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .premium-back-button {
+    transition: none;
+  }
+  
+  .loading-progress {
+    animation: none;
+  }
+  
+  .premium-diff-container {
+    animation: none;
+  }
+}
+
+@media (prefers-contrast: high) {
+  .premium-back-button {
+    border-width: 2px;
+  }
+  
+  .premium-page-title {
+    color: #000000;
+  }
+  
+  .dark .premium-page-title {
+    color: #ffffff;
+  }
+}

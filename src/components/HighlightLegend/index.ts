@@ -1,0 +1,1 @@
+export { default as HighlightLegend } from './HighlightLegend';

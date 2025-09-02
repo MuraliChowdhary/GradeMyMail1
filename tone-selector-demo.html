@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ToneSelector Demo</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f5f7;
+            margin: 0;
+            padding: 40px;
+            min-height: 100vh;
+        }
+        
+        .demo-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .demo-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: #1d1d1f;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+        
+        .demo-subtitle {
+            font-size: 18px;
+            color: #6d6d70;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+        
+        .demo-section {
+            margin-bottom: 40px;
+        }
+        
+        .demo-section h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: #1d1d1f;
+            margin-bottom: 16px;
+        }
+        
+        .demo-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: start;
+        }
+        
+        .demo-controls {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 24px;
+        }
+        
+        .demo-preview {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 24px;
+        }
+        
+        .status-text {
+            font-size: 14px;
+            color: #6d6d70;
+            margin-top: 16px;
+            padding: 12px;
+            background: #e8f4fd;
+            border-radius: 8px;
+            border-left: 4px solid #007aff;
+        }
+        
+        @media (max-width: 768px) {
+            .demo-grid {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+            
+            .demo-container {
+                padding: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-container">
+        <h1 class="demo-title">ToneSelector Component</h1>
+        <p class="demo-subtitle">Apple-inspired dropdown for selecting writing tone in Fix My Mail</p>
+        
+        <div class="demo-section">
+            <h3>Interactive Demo</h3>
+            <div class="demo-grid">
+                <div class="demo-controls">
+                    <div id="tone-selector-container">
+                        <!-- ToneSelector will be rendered here by React -->
+                        <div style="padding: 20px; text-align: center; color: #6d6d70;">
+                            <p>🚀 ToneSelector component is integrated into the FixMyMail page!</p>
+                            <p>To see it in action:</p>
+                            <ol style="text-align: left; max-width: 300px; margin: 16px auto;">
+                                <li>Start the development server: <code>npm run dev</code></li>
+                                <li>Navigate to GradeMyMail</li>
+                                <li>Analyze some email content</li>
+                                <li>Click "Fix My Mail" to see the ToneSelector</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="demo-preview">
+                    <h4 style="margin-top: 0;">Features</h4>
+                    <ul style="color: #6d6d70; line-height: 1.6;">
+                        <li><strong>5 Tone Options:</strong> Professional, Friendly, Persuasive, Analytical, Storytelling</li>
+                        <li><strong>Keyboard Navigation:</strong> Arrow keys, Escape, Enter/Space</li>
+                        <li><strong>Accessibility:</strong> ARIA attributes, screen reader support</li>
+                        <li><strong>Apple Design:</strong> Clean styling matching Grade My Mail</li>
+                        <li><strong>Smooth Animations:</strong> Hover effects and transitions</li>
+                        <li><strong>Dark Mode:</strong> Automatic theme support</li>
+                        <li><strong>Responsive:</strong> Mobile-friendly layout</li>
+                    </ul>
+                    
+                    <div class="status-text">
+                        <strong>✅ Implementation Complete</strong><br>
+                        The ToneSelector is now integrated into the FixMyMail page and will regenerate content when the tone is changed.
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="demo-section">
+            <h3>Integration Details</h3>
+            <div style="background: #f8f9fa; border-radius: 12px; padding: 24px;">
+                <h4 style="margin-top: 0;">Files Created/Modified:</h4>
+                <ul style="color: #6d6d70; line-height: 1.6;">
+                    <li><code>src/components/ToneSelector/ToneSelector.tsx</code> - Main component</li>
+                    <li><code>src/components/ToneSelector/ToneSelector.css</code> - Apple-inspired styling</li>
+                    <li><code>src/components/ToneSelector/__tests__/ToneSelector.test.tsx</code> - Comprehensive tests</li>
+                    <li><code>src/stories/ToneSelector.stories.ts</code> - Storybook integration</li>
+                    <li><code>src/pages/FixMyMail.tsx</code> - Integration with tone change handling</li>
+                    <li><code>src/services/api.ts</code> - Updated to support tone parameters</li>
+                    <li><code>src/types/diff.ts</code> - Enhanced TypeScript interfaces</li>
+                    <li><code>src/components/VirtualizedDiff/VirtualizedDiffViewer.tsx</code> - Enhanced diff viewer</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

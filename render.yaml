@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: grade-my-mail
+    runtime: node
+    buildCommand: npm install && npm run build
+    startCommand: node server/index.js
+    plan: free
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3001

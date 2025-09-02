@@ -1,0 +1,108 @@
+/* Apple-inspired highlighting styles */
+.highlighted-content {
+  font-feature-settings: 'kern' 1, 'liga' 1, 'calt' 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.highlight-span {
+  position: relative;
+  cursor: help;
+  animation: highlightFadeIn 0.3s ease-out;
+}
+
+.highlight-span:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Smooth fade-in animation */
+@keyframes highlightFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Tooltip styles for better UX */
+.highlight-span::after {
+  content: attr(title);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.9);
+  color: white;
+  padding: 6px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  z-index: 1000;
+  margin-bottom: 4px;
+}
+
+.highlight-span::before {
+  content: '';
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 4px solid transparent;
+  border-top-color: rgba(0, 0, 0, 0.9);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+  z-index: 1000;
+}
+
+.highlight-span:hover::after,
+.highlight-span:hover::before {
+  opacity: 1;
+  transform: translateX(-50%) translateY(-2px);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .highlight-span {
+    padding: 1px 2px;
+    margin: 0 0.5px;
+    border-radius: 3px;
+  }
+  
+  .highlight-span::after {
+    font-size: 11px;
+    padding: 4px 6px;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .highlight-span {
+    border-width: 2px;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .highlight-span {
+    animation: none;
+    transition: none;
+  }
+  
+  .highlight-span:hover {
+    transform: none;
+  }
+  
+  .highlight-span::after,
+  .highlight-span::before {
+    transition: none;
+  }
+}
