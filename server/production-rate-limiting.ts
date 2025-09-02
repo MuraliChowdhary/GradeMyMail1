@@ -19,14 +19,14 @@ export const PRODUCTION_RATE_LIMITS: Record<string, RateLimitTier[]> = {
     { name: 'hourly', windowMs: 60 * 60 * 1000, maxRequests: 100 }, // 100 per hour
     { name: 'daily', windowMs: 24 * 60 * 60 * 1000, maxRequests: 500 }, // 500 per day
   ],
-  
+
   // Premium users
   premium: [
     { name: 'burst', windowMs: 60 * 1000, maxRequests: 30 }, // 30 per minute
     { name: 'hourly', windowMs: 60 * 60 * 1000, maxRequests: 500 }, // 500 per hour
     { name: 'daily', windowMs: 24 * 60 * 60 * 1000, maxRequests: 2000 }, // 2000 per day
   ],
-  
+
   // Enterprise users
   enterprise: [
     { name: 'burst', windowMs: 60 * 1000, maxRequests: 100 }, // 100 per minute
@@ -37,8 +37,8 @@ export const PRODUCTION_RATE_LIMITS: Record<string, RateLimitTier[]> = {
 
 // User-based rate limiting (requires authentication)
 export class ProductionRateLimiter {
-  private redis: Redis;
-  
+  protected redis: Redis;
+
   constructor(redisUrl?: string) {
     this.redis = new Redis(redisUrl || process.env.REDIS_URL || 'redis://localhost:6379');
   }
@@ -50,20 +50,20 @@ export class ProductionRateLimiter {
         // Get user ID from authentication (you'll need to implement this)
         const userId = this.getUserId(req);
         const userTier = this.getUserTier(req); // 'free', 'premium', 'enterprise'
-        
+
         if (!userId) {
           // Fall back to IP-based limiting for anonymous users
-          return this.createIPRateLimit(PRODUCTION_RATE_LIMITS.free)(req, res, next);
+          return this.createIPRateLimit(PRODUCTION_RATE_LIMITS.free || [])(req, res, next);
         }
 
-        const userTiers = PRODUCTION_RATE_LIMITS[userTier] || PRODUCTION_RATE_LIMITS.free;
-        
+        const userTiers = PRODUCTION_RATE_LIMITS[userTier] || PRODUCTION_RATE_LIMITS.free || [];
+
         // Check all rate limit tiers
         for (const tier of userTiers) {
           const key = `rate_limit:${userId}:${tier.name}`;
           const current = await this.redis.get(key);
           const count = current ? parseInt(current) : 0;
-          
+
           if (count >= tier.maxRequests) {
             const ttl = await this.redis.ttl(key);
             return res.status(429).json({
@@ -100,12 +100,12 @@ export class ProductionRateLimiter {
   createIPRateLimit(tiers: RateLimitTier[]) {
     return async (req: Request, res: Response, next: NextFunction) => {
       const ip = this.getClientIP(req);
-      
+
       for (const tier of tiers) {
         const key = `rate_limit:ip:${ip}:${tier.name}`;
         const current = await this.redis.get(key);
         const count = current ? parseInt(current) : 0;
-        
+
         if (count >= tier.maxRequests) {
           const ttl = await this.redis.ttl(key);
           return res.status(429).json({
@@ -132,13 +132,13 @@ export class ProductionRateLimiter {
     };
   }
 
-  private getUserId(req: Request): string | null {
+  protected getUserId(req: Request): string | null {
     // Implement your authentication logic here
     // This could be from JWT token, session, API key, etc.
     return req.headers['x-user-id'] as string || null;
   }
 
-  private getUserTier(req: Request): string {
+  protected getUserTier(req: Request): string {
     // Implement your user tier logic here
     // This could be from database, JWT claims, etc.
     return req.headers['x-user-tier'] as string || 'free';
@@ -175,13 +175,13 @@ export class AIRateLimiter extends ProductionRateLimiter {
     return async (req: Request, res: Response, next: NextFunction) => {
       const userId = this.getUserId(req);
       const userTier = this.getUserTier(req);
-      
+
       if (userId) {
         // Check cost-based limiting
         const costKey = `ai_cost:${userId}:daily`;
         const currentCost = parseFloat(await this.redis.get(costKey) || '0');
-        const maxCost = this.maxDailyCost[userTier] || this.maxDailyCost.free;
-        
+        const maxCost = this.maxDailyCost[userTier] || this.maxDailyCost.free || 0;
+
         if (currentCost + this.costPerRequest > maxCost) {
           return res.status(429).json({
             error: 'Daily AI cost limit exceeded',
@@ -199,7 +199,7 @@ export class AIRateLimiter extends ProductionRateLimiter {
 
       // Apply regular rate limiting
       const rateLimitTiers = PRODUCTION_RATE_LIMITS[userTier] || PRODUCTION_RATE_LIMITS.free;
-      return this.createUserRateLimit(rateLimitTiers)(req, res, next);
+      return this.createUserRateLimit(rateLimitTiers || [])(req, res, next);
     };
   }
 }

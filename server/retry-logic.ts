@@ -110,55 +110,57 @@ export class RetryManager {
     for (let attempt = 1; attempt <= config.maxRetries + 1; attempt++) {
       try {
         this.stats.totalAttempts++;
-        
+
         // Apply timeout if configured
-        const timeoutPromise = config.timeout 
+        const timeoutPromise = config.timeout
           ? new Promise<never>((_, reject) => {
-              setTimeout(() => reject(new Error(`Operation timed out after ${config.timeout}ms`)), config.timeout);
-            })
+            setTimeout(() => reject(new Error(`Operation timed out after ${config.timeout}ms`)), config.timeout);
+          })
           : null;
-        
+
         // Execute function with optional timeout
-        const result = timeoutPromise 
+        const result = timeoutPromise
           ? await Promise.race([fn(), timeoutPromise]) as T
           : await fn();
-        
+
         // Success - update stats if this was a retry
         if (attempt > 1) {
           this.stats.successfulRetries++;
           this.stats.lastRetryTime = new Date();
-          
+
           // Update success rate by error type if we have an error type
           if (errorType) {
             if (!this.stats.successRateByErrorType[errorType]) {
               this.stats.successRateByErrorType[errorType] = { attempts: 0, successes: 0 };
             }
-            this.stats.successRateByErrorType[errorType].successes++;
+            const stats = this.stats.successRateByErrorType[errorType];
+            if (stats) stats.successes++;
           }
-          
+
           console.log(`✅ Retry successful on attempt ${attempt}`);
         }
-        
+
         return result;
       } catch (error: any) {
         lastError = error;
         errorType = this.getErrorType(error);
-        
+
         // Update error type distribution
-        this.stats.errorTypeDistribution[errorType] = 
+        this.stats.errorTypeDistribution[errorType] =
           (this.stats.errorTypeDistribution[errorType] || 0) + 1;
-        
+
         // Update success rate tracking
         if (!this.stats.successRateByErrorType[errorType]) {
           this.stats.successRateByErrorType[errorType] = { attempts: 0, successes: 0 };
         }
-        this.stats.successRateByErrorType[errorType].attempts++;
-        
+        const stats = this.stats.successRateByErrorType[errorType];
+        if (stats) stats.attempts++;
+
         // Check if we should retry
-        const shouldRetry = attempt <= config.maxRetries && 
-                           config.retryCondition ? 
-                           config.retryCondition(error) : 
-                           DEFAULT_RETRY_CONFIG.retryCondition!(error);
+        const shouldRetry = attempt <= config.maxRetries &&
+          config.retryCondition ?
+          config.retryCondition(error) :
+          DEFAULT_RETRY_CONFIG.retryCondition!(error);
 
         if (!shouldRetry) {
           console.log(`❌ Not retrying error: ${error.message}`);
@@ -166,22 +168,22 @@ export class RetryManager {
         }
 
         // Update retry distribution
-        this.stats.retryDistribution[attempt] = 
+        this.stats.retryDistribution[attempt] =
           (this.stats.retryDistribution[attempt] || 0) + 1;
 
         // Calculate delay for next attempt
         const delay = this.calculateDelay(attempt, config);
-        
+
         // Call retry callback if provided
         if (config.onRetry) {
           config.onRetry(error, attempt);
         }
 
         console.log(`🔄 Retry attempt ${attempt}/${config.maxRetries} after ${delay}ms delay. Error: ${error.message}`);
-        
+
         // Wait before retrying
         await this.sleep(delay);
-        
+
         // Update average delay
         const totalDelay = Date.now() - startTime;
         this.stats.averageRetryDelay = totalDelay / attempt;
@@ -207,26 +209,26 @@ export class RetryManager {
     mostCommonErrorTypes: Array<{ type: string; count: number }>;
     mostRetriedOperations: Array<{ attempt: number; count: number }>;
   } {
-    const successRate = this.stats.totalAttempts > 0 
-      ? (this.stats.totalAttempts - this.stats.failedRetries) / this.stats.totalAttempts 
+    const successRate = this.stats.totalAttempts > 0
+      ? (this.stats.totalAttempts - this.stats.failedRetries) / this.stats.totalAttempts
       : 0;
-      
-    const averageAttemptsPerSuccess = this.stats.successfulRetries > 0 
-      ? this.stats.totalAttempts / this.stats.successfulRetries 
+
+    const averageAttemptsPerSuccess = this.stats.successfulRetries > 0
+      ? this.stats.totalAttempts / this.stats.successfulRetries
       : 0;
-      
+
     // Get most common error types
     const errorTypes = Object.entries(this.stats.errorTypeDistribution)
       .map(([type, count]) => ({ type, count }))
       .sort((a, b) => b.count - a.count)
       .slice(0, 5);
-      
+
     // Get most retried operations
     const retriedOperations = Object.entries(this.stats.retryDistribution)
       .map(([attempt, count]) => ({ attempt: parseInt(attempt), count }))
       .sort((a, b) => b.count - a.count)
       .slice(0, 5);
-      
+
     return {
       stats: this.stats,
       successRate,
@@ -271,16 +273,16 @@ export const RETRY_CONFIGS = {
     baseDelay: 2000, // 2 seconds
     maxDelay: 15000, // 15 seconds
     retryCondition: (error: any) => {
-      return error.type === 'AI_MODEL' || 
-             error.type === 'NETWORK' || 
-             error.type === 'TIMEOUT' ||
-             (error.response && error.response.status >= 500);
+      return error.type === 'AI_MODEL' ||
+        error.type === 'NETWORK' ||
+        error.type === 'TIMEOUT' ||
+        (error.response && error.response.status >= 500);
     },
     onRetry: (error: any, attempt: number) => {
       console.log(`🤖 AI Model retry ${attempt}: ${error.message}`);
     }
   },
-  
+
   NETWORK: {
     ...DEFAULT_RETRY_CONFIG,
     maxRetries: 5,
@@ -288,15 +290,15 @@ export const RETRY_CONFIGS = {
     maxDelay: 10000, // 10 seconds
     retryCondition: (error: any) => {
       return error.code === 'ECONNREFUSED' ||
-             error.code === 'ENOTFOUND' ||
-             error.code === 'ETIMEDOUT' ||
-             error.type === 'NETWORK';
+        error.code === 'ENOTFOUND' ||
+        error.code === 'ETIMEDOUT' ||
+        error.type === 'NETWORK';
     },
     onRetry: (error: any, attempt: number) => {
       console.log(`🌐 Network retry ${attempt}: ${error.message}`);
     }
   },
-  
+
   STORAGE: {
     ...DEFAULT_RETRY_CONFIG,
     maxRetries: 2,
@@ -304,8 +306,8 @@ export const RETRY_CONFIGS = {
     maxDelay: 2000, // 2 seconds
     retryCondition: (error: any) => {
       return error.type === 'STORAGE' ||
-             error.message?.includes('storage') ||
-             error.message?.includes('cache');
+        error.message?.includes('storage') ||
+        error.message?.includes('cache');
     },
     onRetry: (error: any, attempt: number) => {
       console.log(`💾 Storage retry ${attempt}: ${error.message}`);
@@ -323,7 +325,7 @@ export class CircuitBreaker {
     private failureThreshold: number = 5,
     private recoveryTimeout: number = 60000, // 1 minute
     private successThreshold: number = 2
-  ) {}
+  ) { }
 
   async execute<T>(fn: () => Promise<T>): Promise<T> {
     if (this.state === 'OPEN') {
@@ -347,7 +349,7 @@ export class CircuitBreaker {
 
   private shouldAttemptReset(): boolean {
     return this.lastFailureTime !== null &&
-           Date.now() - this.lastFailureTime.getTime() > this.recoveryTimeout;
+      Date.now() - this.lastFailureTime.getTime() > this.recoveryTimeout;
   }
 
   private onSuccess(): void {

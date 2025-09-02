@@ -45,7 +45,7 @@ export interface HighlightRange {
   suggestion?: string;
 }
 
-export type HighlightType = 
+export type HighlightType =
   | 'spam_words'
   | 'grammar_spelling'
   | 'hard_to_read'
@@ -177,7 +177,7 @@ export class ContentTagger {
         skipProperNouns: true, // Skip capitalized words (company names, etc.)
         skipNonLexical: true, // Skip technical terms and abbreviations
         maxMisspellingsListed: 2, // Limit to keep UI clean
-        dictionary: null // Use the expanded default dictionary
+        dictionary: undefined // Use the expanded default dictionary
       },
       ...options
     };
@@ -204,7 +204,7 @@ export class ContentTagger {
    */
   public extractHighlightRanges(content: string, analysisResult: ContentAnalysisResult): HighlightRange[] {
     const ranges: HighlightRange[] = [];
-    
+
     // Process sentence-level highlights
     for (const sentenceData of analysisResult.report.perSentence) {
       if (sentenceData.tags.length === 0) continue;
@@ -223,7 +223,7 @@ export class ContentTagger {
         if (this.isValidHighlightType(tag)) {
           const priority = HIGHLIGHT_PRIORITIES[tag];
           const messages = HIGHLIGHT_MESSAGES[tag];
-          
+
           ranges.push({
             start: sentenceStart,
             end: sentenceEnd,
@@ -244,7 +244,7 @@ export class ContentTagger {
    */
   public getAnalysisSummary(analysisResult: ContentAnalysisResult) {
     const { global, perSentence } = analysisResult.report;
-    
+
     // Count issues by priority
     const issueCounts = {
       high: 0,
@@ -301,7 +301,7 @@ export class ContentTagger {
   private isValidHighlightType(tag: string): tag is HighlightType {
     return [
       'spam_words',
-      'grammar_spelling', 
+      'grammar_spelling',
       'hard_to_read',
       'fluff',
       'emoji_excess',
@@ -316,13 +316,13 @@ export class ContentTagger {
   private calculateOverallScore(totalIssues: number, wordCount: number): number {
     // Score based on issues per 100 words
     const issuesPerHundred = (totalIssues / Math.max(wordCount, 1)) * 100;
-    
+
     // Scale: 0-2 issues per 100 words = A (90-100)
     //        2-4 issues per 100 words = B (80-89)
     //        4-6 issues per 100 words = C (70-79)
     //        6-8 issues per 100 words = D (60-69)
     //        8+ issues per 100 words = F (0-59)
-    
+
     if (issuesPerHundred <= 2) return Math.max(90, 100 - issuesPerHundred * 5);
     if (issuesPerHundred <= 4) return Math.max(80, 90 - (issuesPerHundred - 2) * 5);
     if (issuesPerHundred <= 6) return Math.max(70, 80 - (issuesPerHundred - 4) * 5);

@@ -407,8 +407,8 @@ const mockFixEmail = async (taggedContent: string): Promise<string> => {
   ];
 
   let result = '';
-  const foundImprovements = [];
-  
+  const foundImprovements: Array<{ original: string; improved: string }> = [];
+
   for (const improvement of improvements) {
     // Use case-insensitive search
     const regex = new RegExp(improvement.original, 'gi');
@@ -425,7 +425,7 @@ const mockFixEmail = async (taggedContent: string): Promise<string> => {
     const fluffMatches = taggedContent.match(/<fluff>(.*?)<\/fluff>/g);
     const spamMatches = taggedContent.match(/<spam_words>(.*?)<\/spam_words>/g);
     const hardToReadMatches = taggedContent.match(/<hard_to_read>(.*?)<\/hard_to_read>/g);
-    
+
     if (fluffMatches) {
       result += `<old_draft>wordy phrases</old_draft><optimized_draft>concise language</optimized_draft>\n`;
     }
@@ -545,7 +545,7 @@ setInterval(() => {
 // Grade My Mail intelligent fallback for GMMeditor failures
 async function gradeMyMailIntelligentFallback(originalText: string): Promise<GMMeditorResponse> {
   console.log('🔄 Using Grade My Mail intelligent fallback for content improvement');
-  
+
   try {
     // Use Grade My Mail's analysis systems to provide intelligent improvements
     const [highlightingResult, scoringResult] = await Promise.allSettled([
@@ -560,7 +560,7 @@ async function gradeMyMailIntelligentFallback(originalText: string): Promise<GMM
     if (highlightingResult.status === 'fulfilled') {
       const analysis = highlightingResult.value;
       const summary = contentTagger.getAnalysisSummary(analysis);
-      
+
       // Generate basic improvements based on rule-based analysis
       if (summary.issueCounts.high > 0) {
         improvements.push('Reduced spam-like language and improved clarity');
@@ -877,11 +877,11 @@ app.post('/api/newsletter/improve', aiRateLimit, validateRequest(['originalText'
 
     } catch (gmmError) {
       console.warn('⚠️ GMMeditor failed, using Grade My Mail intelligent fallback:', gmmError);
-      
+
       // Fallback to Grade My Mail's intelligent analysis (not mock)
       const fallbackResult = await gradeMyMailIntelligentFallback(originalText);
       fallbackResult.metadata.processingTime = Date.now() - startTime;
-      
+
       res.json(fallbackResult);
     }
 

@@ -113,11 +113,11 @@ Improve Next:
 
     try {
       console.log('🤖 Analyzing newsletter with Gemma...');
-      
+
       // Build user message with context if provided
       let userMessage = content;
       if (context && (context.intendedAudience || context.goal)) {
-        const contextInfo = [];
+        const contextInfo: string[] = [];
         if (context.intendedAudience) {
           contextInfo.push(`Intended Audience: ${context.intendedAudience}`);
         }
@@ -165,7 +165,7 @@ Improve Next:
   private parseAnalysisResponse(response: string): NewsletterAnalysis {
     try {
       const lines = response.split('\n').map(line => line.trim()).filter(line => line.length > 0);
-      
+
       // Extract scores
       const audienceFit = this.extractScore(lines, 'Audience Fit');
       const tone = this.extractScore(lines, 'Tone');
@@ -229,12 +229,12 @@ Improve Next:
     for (let i = startIndex + 1; i < lines.length; i++) {
       const line = lines[i];
       if (!line) continue;
-      
+
       // Stop if we hit another section header
       if (line.includes(':') && !line.startsWith('-')) {
         break;
       }
-      
+
       // Add bullet points
       if (line.startsWith('-')) {
         section.push(line.substring(1).trim());
