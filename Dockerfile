@@ -14,15 +14,15 @@ COPY package*.json ./
 
 # Install dependencies (including dev dependencies for build)
 RUN npm ci --ignore-scripts && \
-    npm pkg delete scripts.prepare && \
-    npm ci
+  npm pkg delete scripts.prepare && \
+  npm ci
 
 # Copy source code
 COPY . .
 
 # Build the application
 RUN npm run build && \
-    npm run build:server
+    tsc -p server/tsconfig.production.json --skipLibCheck
 
 # Stage 2: Production stage
 FROM node:20-alpine AS production
@@ -32,7 +32,7 @@ RUN apk add --no-cache dumb-init
 
 # Create app user
 RUN addgroup -g 1001 -S nodejs && \
-    adduser -S nextjs -u 1001
+  adduser -S nextjs -u 1001
 
 # Set working directory
 WORKDIR /app
@@ -44,7 +44,7 @@ COPY --from=builder --chown=nextjs:nodejs /app/package*.json ./
 
 # Install only production dependencies
 RUN npm ci --only=production --silent --ignore-scripts && \
-    npm cache clean --force
+  npm cache clean --force
 
 # Switch to non-root user
 USER nextjs
