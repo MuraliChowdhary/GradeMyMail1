@@ -14,15 +14,15 @@ COPY package*.json ./
 
 # Install dependencies (including dev dependencies for build)
 RUN npm ci --ignore-scripts && \
-  npm pkg delete scripts.prepare && \
-  npm ci
+    npm pkg delete scripts.prepare && \
+    npm ci
 
 # Copy source code
 COPY . .
 
 # Build the application
 RUN npm run build && \
-    tsc -p server/tsconfig.production.json --skipLibCheck
+    npm run build:server
 
 # Stage 2: Production stage
 FROM node:20-alpine AS production
