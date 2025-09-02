@@ -2,7 +2,7 @@ services:
   - type: web
     name: grade-my-mail
     runtime: node
-    buildCommand: npm install && npm run build && tsc -p server/tsconfig.production.json
+    buildCommand: npm ci && npm run build && npm run build:server
     startCommand: node dist/server/index.js
     plan: free
     envVars:
@@ -10,3 +10,5 @@ services:
         value: production
       - key: PORT
         value: "3001"
+      - key: HOST
+        value: "0.0.0.0"
